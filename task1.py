@@ -4,6 +4,9 @@ u=np.zeros((5,4,3))
 v=np.zeros((5,4,3))
 dif=np.zeros((5,4,3))
 
+def print_it(i,j,k,policy,val):
+    ans='(' + str(i) + ',' + str(j) + ',' + str(k) + '):' + policy+ '=[' + str(val) + ']'
+    print(ans)
 
 gamma=0.99
 delta=0.001
@@ -12,8 +15,8 @@ itr=0
 
 while(final > delta):
     
-    print('----------------------------------------------------------------------')
-    print("ITERATION NO:",itr)
+    # print('----------------------------------------------------------------------')
+    print("iteration=",itr)
     for i in range(0,5):
         for j in range(0,4):
             for k in range(0,3):
@@ -53,21 +56,27 @@ while(final > delta):
                 
                 if i>0:
                     if temp==shoot:
-                        print('(',i,j,k,')',v[i,j,k],'policy:shoot')
+                        print_it(i,j,k,'SHOOT',round(v[i,j,k],3))
                     elif temp==recharge:
-                        print('(',i,j,k,')',v[i,j,k],'policy:recharge')
+                        print_it(i,j,k,'RECHARGE',round(v[i,j,k],3))
                     else:
-                        print('(',i,j,k,')',v[i,j,k],'policy:dodge')
+                        print_it(i,j,k,'DODGE',round(v[i,j,k],3))
                     v[i,j,k]=temp
                     
                 elif i==0:
-                    print('(',i,j,k,')',u[i,j,k],'policy:-1')
+                    print_it(i,j,k,'-1',round(v[i,j,k],3))
+                    # print('(',i,j,k,')',u[i,j,k],'policy:-1')
                     v[i,j,k]=0
+
                 dif[i,j,k]=np.abs(v[i,j,k]-u[i,j,k])
     
     u=np.copy(v)
     final=np.max(dif)
-    print(final)
+    # print(final)
     itr+=1
+    if(final > delta):
+        print()
+        print()
+
     
 
